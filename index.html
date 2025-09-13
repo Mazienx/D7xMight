@@ -42,13 +42,24 @@
     }
     section {
       padding: 60px 20px;
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       text-align: center;
     }
     section h2 {
       margin-bottom: 20px;
       color: #ff4ecb;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .gallery img, .gallery video, .gallery iframe {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
     footer {
       background: #111;
@@ -69,6 +80,7 @@
   <nav>
     <a href="#about">About</a>
     <a href="#art">Art</a>
+    <a href="#videos">Videos</a>
     <a href="#network">Network</a>
   </nav>
 
@@ -79,13 +91,35 @@
 
   <section id="art">
     <h2>Art Gallery</h2>
-    <p>Here I share glimpses of my art—visuals, words, and expressions that carry the vibration of love. (More coming soon…)</p>
+    <p>Here I share glimpses of my art—visuals, words, and expressions that carry the vibration of love.</p>
+    <div class="gallery">
+      <!-- Example images (replace with your own) -->
+      <img src="https://via.placeholder.com/400x300.png?text=Artwork+1" alt="Art 1">
+      <img src="https://via.placeholder.com/400x300.png?text=Artwork+2" alt="Art 2">
+      <img src="https://via.placeholder.com/400x300.png?text=Artwork+3" alt="Art 3">
+    </div>
+  </section>
+
+  <section id="videos">
+    <h2>Video Gallery</h2>
+    <p>Here are some moving expressions of my work and spirit.</p>
+    <div class="gallery">
+      <!-- Example YouTube embed -->
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+              title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+      
+      <!-- Example uploaded video (replace src with your file link) -->
+      <video controls>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
   </section>
 
   <section id="network">
     <h2>Pure Love Network</h2>
     <p>Step into the wider connection:</p>
-    <p><a href="https://pure-love-network.carrd.co/" target="_blank">🌐 Enter the Pure Love Network</a></p>
+    <p><a href="https://purelovenetwork.org" target="_blank">🌐 Enter the Pure Love Network</a></p>
   </section>
 
   <footer>
