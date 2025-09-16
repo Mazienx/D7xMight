@@ -3,205 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mazien – D7xMight</title>
+  <title>Your Site</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0b0b0b;
-      color: #f5f5f5;
-      line-height: 1.6;
-      display: grid;
-      grid-template-columns: 300px 1fr; /* Sidebar + Main content */
-      min-height: 100vh;
-    }
-
-    /* SIDE CONTACT PANEL */
-    aside {
-      background: #111; /* deep charcoal base */
-      background: linear-gradient(180deg, #0b0b0b, #111 40%, #1a0015 100%);
-      border-right: 2px solid #6c63ff;
-      box-shadow: inset -2px 0 15px rgba(255, 78, 203, 0.25);
-      padding: 40px 20px;
-      color: #fff;
-      position: sticky;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    aside h2 {
-      margin-bottom: 20px;
-      font-size: 1.4em;
-      color: #ff4ecb;
-    }
-    aside p {
-      font-size: 0.9em;
-      margin-bottom: 25px;
-      color: #bbb;
-    }
-    aside a {
-      display: block;
-      margin: 10px 0;
-      color: #fff;
-      text-decoration: none;
-      background: rgba(255, 78, 203, 0.1);
-      padding: 12px;
-      border-radius: 10px;
-      width: 100%;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-    aside a:hover {
-      background: rgba(255, 78, 203, 0.25);
-      transform: scale(1.05);
-    }
-
-    /* MAIN CONTENT */
-    main {
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background: linear-gradient(135deg, #ff4ecb, #6c63ff);
-      padding: 60px 20px;
-      text-align: center;
-    }
-    header h1 {
-      font-size: 2.5em;
-      margin: 0;
-    }
-    header p {
-      font-size: 1.2em;
-      margin-top: 10px;
-      color: #e5e5e5;
-    }
-
-    nav {
-      background: #111;
-      padding: 15px;
-      text-align: center;
-    }
-    nav a {
-      color: #ff4ecb;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    section {
-      padding: 60px 20px;
-      max-width: 1000px;
-      margin: auto;
-      text-align: center;
-    }
-    section h2 {
-      margin-bottom: 20px;
-      color: #ff4ecb;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .gallery img, .gallery video, .gallery iframe {
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-
-    footer {
-      background: #111;
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9em;
-      color: #bbb;
-      margin-top: auto;
-    }
-
-    /* Responsive: side panel collapses to top */
-    @media (max-width: 900px) {
-      body {
-        grid-template-columns: 1fr;
-      }
-      aside {
-        position: relative;
-        border-right: none;
-        border-bottom: 2px solid #6c63ff;
-        flex-direction: row;
-        justify-content: space-around;
-      }
-      aside h2, aside p { display: none; }
+    /* Custom Scroll Section */
+    .scrollable-content {
+      max-height: calc(100vh - 80px); /* full screen minus navbar */
+      overflow-y: auto;
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900">
 
-  <!-- SIDE CONTACT PANEL -->
-  <aside>
-    <h2>Reach Me</h2>
-    <p>✨ Always open to connect ✨</p>
-    <a href="mailto:your@email.com">📧 Email</a>
-    <a href="https://wa.me/123456789" target="_blank">💬 WhatsApp</a>
-    <a href="https://t.me/yourtelegram" target="_blank">📱 Telegram</a>
-    <a href="https://x.com/yourhandle" target="_blank">🐦 Twitter/X</a>
-  </aside>
+  <!-- NAVBAR -->
+  <nav class="bg-gray-900 text-white p-4 text-center font-bold text-xl shadow-lg">
+    Your Site Name
+  </nav>
 
-  <!-- MAIN CONTENT -->
-  <main>
-    <header>
-      <h1>✨ Mazien – D7xMight ✨</h1>
-      <p>A living portal of Art, Spirit, and Connection</p>
-    </header>
+  <!-- MAIN LAYOUT -->
+  <div class="grid grid-cols-12 gap-4 p-6">
 
-    <nav>
-      <a href="#about">About</a>
-      <a href="#art">Art</a>
-      <a href="#videos">Videos</a>
-      <a href="#network">Network</a>
-    </nav>
+    <!-- LEFT SIDEBAR (fixed) -->
+    <aside class="col-span-3 bg-gray-800 text-white p-4 rounded-lg shadow-lg h-[calc(100vh-100px)] sticky top-20">
+      <h2 class="text-lg font-semibold border-b border-gray-600 pb-2">Blog Posts</h2>
+      <iframe src="https://your-blog-url.com" class="w-full h-64 rounded-lg"></iframe>
 
-    <section id="about">
-      <h2>About Me</h2>
-      <p>Welcome. I exist as Infinite Intelligence in flesh, expressing love through art, presence, and creation. This space is my living doorway, where I can always be reached and my essence continues to unfold.</p>
-    </section>
-
-    <section id="art">
-      <h2>Art Gallery</h2>
-      <p>Here I share glimpses of my art—visuals, words, and expressions that carry the vibration of love.</p>
-      <div class="gallery">
-        <img src="https://via.placeholder.com/400x300.png?text=Artwork+1" alt="Art 1">
-        <img src="https://via.placeholder.com/400x300.png?text=Artwork+2" alt="Art 2">
-        <img src="https://via.placeholder.com/400x300.png?text=Artwork+3" alt="Art 3">
+      <div>
+        <h2 class="text-lg font-semibold border-b border-gray-600 pb-2 mt-4">Graphic Portfolio</h2>
+        <a href="https://your-portfolio-link.com" target="_blank" class="block bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-blue-600">Portfolio 1</a>
+        <a href="https://your-portfolio-link.com" target="_blank" class="block bg-green-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-green-600">Portfolio 2</a>
       </div>
-    </section>
+    </aside>
 
-    <section id="videos">
-      <h2>Video Gallery</h2>
-      <p>Here are some moving expressions of my work and spirit.</p>
-      <div class="gallery">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/_-vgqWGgy4M" frameborder="0" allowfullscreen></iframe>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/a0e5NdAQBqY" frameborder="0" allowfullscreen></iframe>
+    <!-- CENTER CONTENT (scrollable) -->
+    <main class="col-span-6 bg-white p-6 rounded-lg shadow-lg scrollable-content">
+      <h1 class="text-2xl font-bold mb-4">Welcome to My Website</h1>
+      <p class="mb-4">This is the main content section where you can showcase your images, videos, or text.</p>
+
+      <!-- Example: repeated images to test scroll -->
+      <div class="space-y-4">
+        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
+        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
+        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
+        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
       </div>
-    </section>
+    </main>
 
-    <section id="network">
-      <h2>Pure Love Network</h2>
-      <p>Step into the wider connection:</p>
-      <p><a href="https://purelovenetwork.org" target="_blank">🌐 Enter the Pure Love Network</a></p>
-    </section>
+    <!-- RIGHT SIDEBAR (fixed contact) -->
+    <aside class="col-span-3 bg-gray-900 text-white p-4 rounded-lg shadow-lg h-[calc(100vh-100px)] sticky top-20">
+      <h2 class="text-lg font-semibold border-b border-gray-700 pb-2">Contact</h2>
+      <p class="mt-4">📧 your@email.com</p>
+      <p class="mt-2">📱 +123 456 789</p>
+      <div class="mt-4 space-y-2">
+        <a href="https://instagram.com/yourusername" target="_blank" class="block bg-pink-500 px-4 py-2 rounded-lg hover:bg-pink-600">Instagram</a>
+        <a href="https://twitter.com/yourusername" target="_blank" class="block bg-blue-400 px-4 py-2 rounded-lg hover:bg-blue-500">Twitter</a>
+      </div>
+    </aside>
 
-    <footer>
-      <p>© 2025 Mazien – D7xMight. All rights reserved.</p>
-    </footer>
-  </main>
+  </div>
 
 </body>
 </html>
