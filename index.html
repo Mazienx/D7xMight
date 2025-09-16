@@ -91,6 +91,17 @@
     .instagram { background: #ff4081; color: #fff; }
     .twitter { background: #2196f3; color: #fff; }
 
+       .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .gallery img, .gallery video, .gallery iframe {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+
     footer {
       background: #111;
       text-align: center;
