@@ -3,64 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Site</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Mazien – D7xMight</title>
   <style>
-    /* Custom Scroll Section */
-    .scrollable-content {
-      max-height: calc(100vh - 80px); /* full screen minus navbar */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0b0b;
+      color: #f5f5f5;
+    }
+    header {
+      background: linear-gradient(135deg, #ff4ecb, #6c63ff);
+      padding: 40px 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.2em;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.1em;
+      margin-top: 10px;
+      color: #e5e5e5;
+    }
+    nav {
+      background: #111;
+      padding: 15px;
+      text-align: center;
+    }
+    nav a {
+      color: #ff4ecb;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Layout with sidebars */
+    .layout {
+      display: grid;
+      grid-template-columns: 250px 1fr 250px; /* fixed sidebar widths */
+      gap: 20px;
+      padding: 20px;
+    }
+    .sidebar {
+      background: #121212;
+      padding: 15px;
+      border-radius: 10px;
+      height: calc(100vh - 200px); /* stays shorter */
       overflow-y: auto;
+    }
+    .main {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      height: calc(100vh - 200px);
+      overflow-y: auto; /* middle scrollable */
+    }
+    .sidebar h2, .main h2 {
+      color: #ff4ecb;
+      margin-bottom: 10px;
+    }
+    .portfolio-btn {
+      display: block;
+      background: #2196f3;
+      color: #fff;
+      padding: 10px;
+      margin: 10px 0;
+      text-align: center;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .portfolio-btn.green {
+      background: #4caf50;
+    }
+    .contact-btn {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .instagram { background: #ff4081; color: #fff; }
+    .twitter { background: #2196f3; color: #fff; }
+
+    footer {
+      background: #111;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #bbb;
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body>
 
-  <!-- NAVBAR -->
-  <nav class="bg-gray-900 text-white p-4 text-center font-bold text-xl shadow-lg">
-    Your Site Name
+  <header>
+    <h1>✨ Mazien – D7xMight ✨</h1>
+    <p>A living portal of Art, Spirit, and Connection</p>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#art">Art</a>
+    <a href="#videos">Videos</a>
+    <a href="#network">Network</a>
   </nav>
 
-  <!-- MAIN LAYOUT -->
-  <div class="grid grid-cols-12 gap-4 p-6">
+  <div class="layout">
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <h2>Blog Posts</h2>
+      <iframe src="https://example.com" width="100%" height="200" frameborder="0"></iframe>
 
-    <!-- LEFT SIDEBAR (fixed) -->
-    <aside class="col-span-3 bg-gray-800 text-white p-4 rounded-lg shadow-lg h-[calc(100vh-100px)] sticky top-20">
-      <h2 class="text-lg font-semibold border-b border-gray-600 pb-2">Blog Posts</h2>
-      <iframe src="https://your-blog-url.com" class="w-full h-64 rounded-lg"></iframe>
-
-      <div>
-        <h2 class="text-lg font-semibold border-b border-gray-600 pb-2 mt-4">Graphic Portfolio</h2>
-        <a href="https://your-portfolio-link.com" target="_blank" class="block bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-blue-600">Portfolio 1</a>
-        <a href="https://your-portfolio-link.com" target="_blank" class="block bg-green-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-green-600">Portfolio 2</a>
-      </div>
+      <h2>Graphic Portfolio</h2>
+      <a href="#" class="portfolio-btn">Portfolio 1</a>
+      <a href="#" class="portfolio-btn green">Portfolio 2</a>
     </aside>
 
-    <!-- CENTER CONTENT (scrollable) -->
-    <main class="col-span-6 bg-white p-6 rounded-lg shadow-lg scrollable-content">
-      <h1 class="text-2xl font-bold mb-4">Welcome to My Website</h1>
-      <p class="mb-4">This is the main content section where you can showcase your images, videos, or text.</p>
-
-      <!-- Example: repeated images to test scroll -->
-      <div class="space-y-4">
-        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
-        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
-        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
-        <img src="images/your-image.png" alt="Example" class="rounded-lg shadow-md">
-      </div>
+    <!-- Main Content -->
+    <main class="main">
+      <h2>Welcome to My Website</h2>
+      <p>This is the main content section where you can showcase your images, videos, or text.</p>
+      <img src="https://via.placeholder.com/400x200.png?text=Example" alt="Example">
+      <img src="https://via.placeholder.com/400x200.png?text=Example" alt="Example">
+      <img src="https://via.placeholder.com/400x200.png?text=Example" alt="Example">
     </main>
 
-    <!-- RIGHT SIDEBAR (fixed contact) -->
-    <aside class="col-span-3 bg-gray-900 text-white p-4 rounded-lg shadow-lg h-[calc(100vh-100px)] sticky top-20">
-      <h2 class="text-lg font-semibold border-b border-gray-700 pb-2">Contact</h2>
-      <p class="mt-4">📧 your@email.com</p>
-      <p class="mt-2">📱 +123 456 789</p>
-      <div class="mt-4 space-y-2">
-        <a href="https://instagram.com/yourusername" target="_blank" class="block bg-pink-500 px-4 py-2 rounded-lg hover:bg-pink-600">Instagram</a>
-        <a href="https://twitter.com/yourusername" target="_blank" class="block bg-blue-400 px-4 py-2 rounded-lg hover:bg-blue-500">Twitter</a>
-      </div>
+    <!-- Right Sidebar -->
+    <aside class="sidebar">
+      <h2>Contact</h2>
+      <p>📧 your@email.com</p>
+      <p>📱 +123 456 789</p>
+      <a href="#" class="contact-btn instagram">Instagram</a>
+      <a href="#" class="contact-btn twitter">Twitter</a>
     </aside>
-
   </div>
+
+  <footer>
+    <p>© 2025 Mazien – D7xMight. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
