@@ -103,13 +103,25 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 } /* <-- missing closing brace fixed here */
     
-    footer {
-      background: #111;
-      text-align: center;
-      padding: 15px;
-      font-size: 0.9em;
-      color: #bbb;
-    }
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr; /* stack everything */
+  }
+  .sidebar {
+    height: auto;
+  }
+}
+    
+footer {
+  background: #0d0d0d;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9em;
+  color: #888;
+  border-top: 2px solid #ff4ecb;
+}
+
+    
   </style>
 </head>
 <body>
