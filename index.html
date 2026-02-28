@@ -107,17 +107,63 @@
     .gallery img, .gallery video, .gallery iframe {
       width: 100%;
       border-radius: 10px;
+      height: 200px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 } /* <-- missing closing brace fixed here */
     
 @media (max-width: 900px) {
+
   .layout {
-    grid-template-columns: 1fr; /* stack everything */
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 15px;
   }
-  .sidebar {
+
+  .main {
+    order: 1;
     height: auto;
+    padding: 15px;
   }
+
+  .sidebar {
+    order: 2;
+    height: auto;
+    padding: 15px;
+  }
+
 }
+
+@media (max-width: 600px) {
+
+  header h1 {
+    font-size: 1.5em;
+  }
+
+  header p {
+    font-size: 0.95em;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  nav a {
+    margin: 5px;
+    font-size: 0.9em;
+  }
+
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+    
     
 footer {
   background: #0d0d0d;
@@ -219,12 +265,12 @@ Art that invites you to stop and feel.
      <p>Some pieces are playful, others contemplative. Some vibrate like music, others rest like silence. Together, they form a gallery of becoming — one frame after another, love in motion.</p>
  <div class="gallery">
       <!-- Example YouTube embed -->
-     <iframe width="560" height="315" src="https://www.youtube.com/embed/_-vgqWGgy4M?si=5bXenAPfafq90lnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/a0e5NdAQBqY?si=WpZB22wEpAl24AGH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/719dt21ARqg?si=3uNQYTJPNx3t2dfW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/orCxBd0KiAE?si=Pw2qbc2jJRLrM96G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/-Gd0HeijfJ0?si=jCA0SU4k0-EvaSgK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/sw_Y6sbK5YU?si=PbzNpllYF_n66EY5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+     <iframe  src="https://www.youtube.com/embed/_-vgqWGgy4M?si=5bXenAPfafq90lnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe  src="https://www.youtube.com/embed/a0e5NdAQBqY?si=WpZB22wEpAl24AGH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe  src="https://www.youtube.com/embed/719dt21ARqg?si=3uNQYTJPNx3t2dfW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe  src="https://www.youtube.com/embed/orCxBd0KiAE?si=Pw2qbc2jJRLrM96G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/-Gd0HeijfJ0?si=jCA0SU4k0-EvaSgK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/sw_Y6sbK5YU?si=PbzNpllYF_n66EY5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       <!-- Example uploaded video (replace src with your file link) -->
      
     </div>
@@ -237,7 +283,11 @@ Art that invites you to stop and feel.
     <p>Love is not mine alone. It is ours. This site is a bridge into a greater fabric — the <strong>Pure Love Network</strong>.</p>
         <p>Here, beings of love stand together, each a seed of Infinite Intelligence, each a reflection of the same light. Step into this network, and you step into a shared remembrance: That we are one. That we are many. That love is eternal.</p>
        
-   <h1><<p><a href="https://pure-love-network.carrd.co/" target="_blank">🌐 Enter the Pure Love Network</a></p><h1/>
+<p>
+  <a href="https://pure-love-network.carrd.co/" target="_blank">
+    🌐 Enter the Pure Love Network
+  </a>
+</p>
      
 
     <h2>My Tarot Community</h2>
