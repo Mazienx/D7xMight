@@ -9,62 +9,113 @@
 
 <style>
 body {
+    margin: 0;
     background: black;
     color: white;
     font-family: 'Space Mono', monospace;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-.fade-in {
-    animation: fadeIn 2s ease forwards;
+/* STAR FIELD */
+.star {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: white;
+    opacity: 0.3;
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%,100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+/* TEXT STYLE */
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
     opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
 }
 
-@keyframes fadeIn {
-    to { opacity: 1; }
+.section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.big {
+    font-size: 2rem;
+}
+
+@media(min-width:768px){
+    .big { font-size: 3rem; }
 }
 </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen text-center px-6">
+<body>
 
-<div class="max-w-3xl space-y-8">
+<!-- STAR BACKGROUND -->
+<div id="stars"></div>
 
-    <h1 class="text-4xl md:text-6xl font-bold text-purple-400 fade-in">
-        OUR MANIFESTO
-    </h1>
+<!-- MANIFESTO FLOW -->
+<div class="section big">We are not building a gallery.</div>
+<div class="section big text-purple-400">We are opening a dimension.</div>
 
-    <p class="text-lg text-gray-300 fade-in" style="animation-delay: 0.5s;">
-        We are not building a gallery.
-        We are opening a dimension.
-    </p>
+<div class="section">Art is not something you observe.</div>
+<div class="section">It is something you enter.</div>
 
-    <p class="text-lg text-gray-300 fade-in" style="animation-delay: 1s;">
-        97 Art Galaxy exists beyond walls, beyond frames,
-        beyond limitation.
-    </p>
+<div class="section">A frequency.</div>
+<div class="section text-purple-400">A transmission.</div>
 
-    <p class="text-lg text-gray-300 fade-in" style="animation-delay: 1.5s;">
-        Art is not observed here —
-        it is experienced, felt, and lived.
-    </p>
+<div class="section">97 Art Galaxy exists beyond walls.</div>
+<div class="section">Beyond frames.</div>
+<div class="section">Beyond limitation.</div>
 
-    <p class="text-lg text-gray-300 fade-in" style="animation-delay: 2s;">
-        We merge the physical and digital,
-        the human and the infinite,
-        the known and the undiscovered.
-    </p>
+<div class="section">We merge the physical and digital.</div>
+<div class="section">The human and the infinite.</div>
 
-    <p class="text-lg text-purple-400 font-bold fade-in" style="animation-delay: 2.5s;">
-        This is not an exhibition.
-        This is a transmission.
-    </p>
+<div class="section text-purple-400 big">This is not an exhibition.</div>
+<div class="section text-purple-400 big">This is a transmission.</div>
 
-    <a href="index.html" class="inline-block mt-6 px-6 py-3 border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-black transition rounded-full fade-in" style="animation-delay: 3s;">
+<div class="section">
+    <a href="museum.html" class="px-6 py-3 border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-black transition rounded-full">
         Return to Galaxy
     </a>
-
 </div>
+
+<script>
+/* SCROLL ANIMATION */
+const sections = document.querySelectorAll('.section');
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.5 });
+
+sections.forEach(section => observer.observe(section));
+
+/* GENERATE STARS */
+const starContainer = document.getElementById('stars');
+
+for(let i = 0; i < 120; i++){
+    const star = document.createElement('div');
+    star.classList.add('star');
+    star.style.top = Math.random() * 100 + 'vh';
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    starContainer.appendChild(star);
+}
+</script>
 
 </body>
 </html>
