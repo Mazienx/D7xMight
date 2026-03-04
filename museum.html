@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>97 ART GALAXY — MASTER CONCEPT</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+function openGalaxy(id) {
+  // hide all
+  document.querySelectorAll('#galaxyContent > div').forEach(div => {
+    div.classList.add('hidden');
+  });
+
+  // show selected
+  document.getElementById(id).classList.remove('hidden');
+}
+</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
@@ -291,6 +303,63 @@
             </div>
         </div>
     </section>
+
+
+<!-- Galaxy Categories -->
+<section class="py-20 px-6">
+  <div class="container mx-auto">
+
+    <h2 class="text-3xl font-bold text-center mb-10 text-purple-400">
+      EXPLORE DIMENSIONS
+    </h2>
+
+    <!-- Scrollable Logos -->
+    <div class="flex space-x-6 overflow-x-auto pb-4" id="logoScroll">
+
+      <button onclick="openGalaxy('galaxy1')" class="min-w-[120px] h-32 bg-gray-800 rounded-xl flex items-center justify-center hover:scale-105 transition">
+        <span>Galaxy 1</span>
+      </button>
+
+      <button onclick="openGalaxy('galaxy2')" class="min-w-[120px] h-32 bg-gray-800 rounded-xl flex items-center justify-center hover:scale-105 transition">
+        <span>Galaxy 2</span>
+      </button>
+
+      <button onclick="openGalaxy('galaxy3')" class="min-w-[120px] h-32 bg-gray-800 rounded-xl flex items-center justify-center hover:scale-105 transition">
+        <span>Galaxy 3</span>
+      </button>
+
+    </div>
+
+    <!-- Galleries -->
+    <div id="galaxyContent" class="mt-10">
+
+      <!-- Galaxy 1 -->
+      <div id="galaxy1" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
+        <img src="https://source.unsplash.com/random/400x400?art,1" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?art,2" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?art,3" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?art,4" class="rounded-lg">
+      </div>
+
+      <!-- Galaxy 2 -->
+      <div id="galaxy2" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
+        <img src="https://source.unsplash.com/random/400x400?space,1" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?space,2" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?space,3" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?space,4" class="rounded-lg">
+      </div>
+
+      <!-- Galaxy 3 -->
+      <div id="galaxy3" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
+        <img src="https://source.unsplash.com/random/400x400?cosmic,1" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?cosmic,2" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?cosmic,3" class="rounded-lg">
+        <img src="https://source.unsplash.com/random/400x400?cosmic,4" class="rounded-lg">
+      </div>
+
+    </div>
+  </div>
+</section>
     
     <!-- About Section -->
     <section id="about" class="py-20 px-6 bg-black bg-opacity-50 relative">
