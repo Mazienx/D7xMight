@@ -1,2 +1,13 @@
-Main
-index.htlm
+D7xMight/
+│
+├── Mazien Basement/
+│   └── Folder structure.json
+│
+├── Image/
+│   ├── I have.jpg
+│   ├── I become.jpg
+│   └── I Exist.jpg
+│
+├── Index.html
+├── Muszium.json
+└── tsconfig.json
