@@ -5,38 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mazien – D7xMight</title>
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #0b0b0b;
       color: #f5f5f5;
+      overflow-x: hidden;
     }
+
+    /* ── PARTICLE CANVAS ── */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── HEADER ── */
     header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
       background: linear-gradient(135deg, #ff4ecb, #6c63ff);
-      padding: 40px 20px;
+      padding: 18px 20px;
       text-align: center;
-      position: relative;
       overflow: hidden;
     }
     header h1 {
-      font-size: 2.2em;
+      font-size: 1.6em;
       margin: 0;
       position: relative;
       z-index: 2;
       animation: breathe 5s ease-in-out infinite;
     }
-    @keyframes breathe {
-      0%, 100% { text-shadow: 0 0 8px rgba(255,255,255,0.4); }
-      50%       { text-shadow: 0 0 28px rgba(255,255,255,1), 0 0 50px rgba(255,78,203,0.8); }
-    }
     header p {
-      font-size: 1.1em;
-      margin-top: 10px;
+      font-size: 0.95em;
+      margin-top: 4px;
       color: #e5e5e5;
       position: relative;
       z-index: 2;
     }
-    /* Aurora behind header */
+    @keyframes breathe {
+      0%, 100% { text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+      50%       { text-shadow: 0 0 28px rgba(255,255,255,1), 0 0 50px rgba(255,78,203,0.8); }
+    }
     header::after {
       content: '';
       position: absolute;
@@ -49,127 +62,289 @@
       0%, 100% { opacity: 0.4; transform: scale(1); }
       50%       { opacity: 1;   transform: scale(1.12); }
     }
+
+    /* ── NAV ── */
     nav {
+      position: fixed;
+      top: 88px; left: 0; right: 0;
+      z-index: 99;
       background: #111;
-      padding: 15px;
+      padding: 10px 15px;
       text-align: center;
+      border-bottom: 1px solid #222;
     }
     nav a {
       color: #ff4ecb;
-      margin: 0 15px;
+      margin: 0 12px;
       text-decoration: none;
       font-weight: bold;
+      font-size: 0.9em;
     }
-    nav a:hover {
-      text-decoration: underline;
+    nav a:hover { text-decoration: underline; }
+    nav a.bbb-nav { color: #00FF41; }
+
+    /* ── FIXED SIDEBAR WIDTHS ── */
+    :root {
+      --header-h: 88px;
+      --nav-h: 41px;
+      --top-offset: 129px; /* header + nav */
+      --sidebar-w: 230px;
     }
 
-    /* Layout with sidebars */
-    .layout {
-      display: grid;
-      grid-template-columns: 250px 1fr 250px;
-      gap: 20px;
-      padding: 20px;
-    }
-    .sidebar {
+    /* ── LEFT SIDEBAR — truly fixed ── */
+    .sidebar-left {
+      position: fixed;
+      top: var(--top-offset);
+      left: 0;
+      width: var(--sidebar-w);
+      height: calc(100vh - var(--top-offset));
       background: #121212;
-      padding: 15px;
-      border-radius: 10px;
-      height: calc(100vh - 200px);
+      border-right: 1px solid #222;
       overflow-y: auto;
-      position: sticky;
-      top: 0;
+      overflow-x: hidden;
+      padding: 20px 14px;
+      z-index: 10;
     }
+
+    /* ── RIGHT SIDEBAR — truly fixed ── */
+    .sidebar-right {
+      position: fixed;
+      top: var(--top-offset);
+      right: 0;
+      width: var(--sidebar-w);
+      height: calc(100vh - var(--top-offset));
+      background: #121212;
+      border-left: 1px solid #222;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 20px 14px;
+      z-index: 10;
+    }
+
+    /* ── MIDDLE SCROLLABLE COLUMN ── */
+    .main-wrap {
+      margin-left: var(--sidebar-w);
+      margin-right: var(--sidebar-w);
+      margin-top: var(--top-offset);
+      min-height: calc(100vh - var(--top-offset));
+      position: relative;
+      z-index: 1;
+    }
+
     .main {
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 10px;
-      min-height: calc(100vh - 200px);
-      height: auto;
-      text-align: center;
-      overflow-y: visible;
+      background: #1a1a1a;
+      padding: 32px 28px 60px;
+      min-height: 100%;
     }
-    .sidebar h2, .main h2 {
+
+    /* ── SIDEBAR TYPOGRAPHY ── */
+    .sidebar-left h2,
+    .sidebar-right h2 {
       color: #ff4ecb;
+      font-size: 1em;
       margin-bottom: 10px;
+      margin-top: 18px;
     }
+    .sidebar-left h2:first-child,
+    .sidebar-right h2:first-child { margin-top: 0; }
+
+    .sidebar-left p,
+    .sidebar-right p {
+      font-size: 0.85em;
+      color: #ccc;
+      margin-bottom: 6px;
+    }
+
+    /* ── BUTTONS ── */
     .portfolio-btn {
       display: block;
-      background:#859CD0;
+      background: #859CD0;
       color: #fff;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 9px 10px;
+      margin: 8px 0;
       text-align: center;
       border-radius: 8px;
       text-decoration: none;
       font-weight: bold;
+      font-size: 0.82em;
     }
-    .portfolio-btn.gold {
-       color: #000;
-      background: #FFD700;
-    }
+    .portfolio-btn.gold { color: #000; background: #FFD700; }
+
     .contact-btn {
       display: block;
-      margin: 10px 0;
-      padding: 10px;
+      margin: 8px 0;
+      padding: 9px 10px;
       border-radius: 8px;
       text-align: center;
       text-decoration: none;
       font-weight: bold;
+      font-size: 0.82em;
     }
     .instagram { background: #ff4081; color: #fff; }
-    .twitter { background: #2196f3; color: #fff; }
-    .medium { background: #000000; color: #fff; }
-    .giant { background: #800080; color: #fff; }
+    .twitter   { background: #2196f3; color: #fff; }
+    .medium    { background: #000; color: #fff; }
+    .giant     { background: #800080; color: #fff; }
     .clubhouse { background: #FFA908; color: #000; }
-    .Whatsapp { background: #25D366; color: #000; }
-    .museum { background: #85C6D0; color: #000; }
+    .Whatsapp  { background: #25D366; color: #000; }
+    .museum    { background: #85C6D0; color: #000; }
 
+    /* ── MAIN CONTENT TYPOGRAPHY ── */
+    .main h2 { color: #ff4ecb; margin: 32px 0 10px; font-size: 1.4em; }
+    .main h1 { margin: 20px 0 10px; }
+    .main p  { line-height: 1.75; color: #ddd; margin-bottom: 12px; font-size: 0.97em; }
+
+    /* ── GALLERY ── */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
     }
-    .gallery img, .gallery video, .gallery iframe {
+    .gallery img,
+    .gallery video,
+    .gallery iframe {
       width: 100%;
       border-radius: 10px;
-      height: 387px;
+      height: 340px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
-    
-    @media (max-width: 900px) {
-      .layout {
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
-        gap: 15px;
-      }
-      .main {
-        order: 1;
-        height: auto;
-        padding: 15px;
-      }
-      .sidebar {
-        order: 2;
-        height: auto;
-        padding: 15px;
-      }
+
+    /* ── SCROLL REVEAL — the breathing ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── BITE BY BYTES SECTION ── */
+    #bitebybytes {
+      margin-top: 48px;
+      background: linear-gradient(145deg, #1C0A00, #2D1200);
+      border-radius: 18px;
+      padding: 36px 28px;
+      border: 1px solid rgba(0,255,65,0.2);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    #bitebybytes::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 75% 20%, rgba(0,255,65,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .bbb-eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #00FF41;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+    }
+    #bitebybytes h2 {
+      font-family: Georgia, serif;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 900;
+      color: #F5F0E8;
+      margin: 0 0 6px;
+      line-height: 1.1;
+    }
+    #bitebybytes h2 em { color: #00FF41; font-style: italic; }
+    .bbb-tagline {
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #00AA22;
+      font-size: 14px;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .bbb-story {
+      font-size: 15px;
+      color: #C8B89A;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .bbb-story strong { color: #F5F0E8; }
+    .bbb-pull {
+      border-left: 3px solid #00FF41;
+      padding: 14px 18px;
+      margin: 20px 0;
+      background: rgba(0,255,65,0.04);
+      border-radius: 0 8px 8px 0;
+    }
+    .bbb-pull p {
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #F5F0E8;
+      font-size: 15px;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .bbb-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .bbb-pill {
+      background: rgba(0,255,65,0.08);
+      border: 1px solid rgba(0,255,65,0.2);
+      color: #00FF41;
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .bbb-btn {
+      display: inline-block;
+      background: #00FF41;
+      color: #1C0A00;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      margin-top: 8px;
+      transition: all 0.25s;
+    }
+    .bbb-btn:hover {
+      background: #00E63A;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,255,65,0.3);
+    }
+    .bbb-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-left: 14px;
+      color: #00FF41;
+      font-size: 12px;
+      letter-spacing: 1px;
+      opacity: 0.7;
+      vertical-align: middle;
+    }
+    .bbb-live::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: #00FF41;
+      border-radius: 50%;
+      animation: bbb-pulse 2s infinite;
+    }
+    @keyframes bbb-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
     }
 
-    @media (max-width: 600px) {
-      header h1 { font-size: 1.5em; }
-      header p  { font-size: 0.95em; }
-      nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-      }
-      nav a { margin: 5px; font-size: 0.9em; }
-      .gallery { grid-template-columns: 1fr; }
-    }
-
+    /* ── FOOTER ── */
     footer {
       background: #0d0d0d;
       text-align: center;
@@ -177,248 +352,216 @@
       font-size: 0.9em;
       color: #888;
       border-top: 2px solid #ff4ecb;
-    }
-
-    /* Particle canvas — sits behind everything, fixed */
-    #particle-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* Ensure all real content sits above canvas */
-    header, nav, .layout, footer {
+      margin-left: var(--sidebar-w);
+      margin-right: var(--sidebar-w);
       position: relative;
       z-index: 1;
+    }
+
+    /* ── MOBILE: everything stacks, sidebars unfixed ── */
+    @media (max-width: 860px) {
+      :root { --sidebar-w: 0px; --top-offset: 110px; }
+
+      header { padding: 14px 16px; }
+      header h1 { font-size: 1.3em; }
+
+      nav { top: 72px; font-size: 0.82em; flex-wrap: wrap; display: flex; justify-content: center; gap: 6px; padding: 8px; }
+      nav a { margin: 0 6px; }
+
+      .sidebar-left, .sidebar-right {
+        position: static;
+        width: 100%;
+        height: auto;
+        border: none;
+        border-top: 1px solid #222;
+        overflow: visible;
+      }
+
+      .main-wrap {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 110px;
+      }
+
+      footer { margin-left: 0; margin-right: 0; }
+
+      .gallery { grid-template-columns: 1fr; }
+      .gallery img, .gallery iframe { height: 260px; }
     }
   </style>
 </head>
 <body>
 
-  <canvas id="particle-canvas"></canvas>
+<canvas id="particle-canvas"></canvas>
 
-  <header>
-    <h1>✨ Mazien – D7xMight ✨</h1>
-    <p>My living portal of Art, Spirit, and Connection</p>
-  </header>
+<header>
+  <h1>✨ Mazien – D7xMight ✨</h1>
+  <p>My living portal of Art, Spirit, and Connection</p>
+</header>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#art">Art</a>
-    <a href="#videos">Videos</a>
-    <a href="#neurodivergent">Neurodivergent</a>
-    <a href="#culture">Culture</a>
-    <a href="#network">Network</a>
-  </nav>
+<nav>
+  <a href="#about">About</a>
+  <a href="#art">Art</a>
+  <a href="#videos">Videos</a>
+  <a href="#neurodivergent">Neurodivergent</a>
+  <a href="#culture">Culture</a>
+  <a href="#network">Network</a>
+  <a href="#bitebybytes" class="bbb-nav">Bite by Bytes ↗</a>
+</nav>
 
-  <div class="layout">
-    <!-- Left Sidebar -->
-    <aside class="sidebar">
-      <h2>Blog Posts</h2>
-      <iframe src="https://awokenamitheuniverse.blogspot.com/" width="100%" height="300" frameborder="0"></iframe>
+<!-- LEFT SIDEBAR — fixed -->
+<aside class="sidebar-left">
+  <h2>Blog Posts</h2>
+  <iframe src="https://awokenamitheuniverse.blogspot.com/" width="100%" height="220" frameborder="0" style="border-radius:8px;"></iframe>
 
-      <h2>Graphic Portfolio</h2>
-      <a href="https://eseh1alabi-invisible-strength.my.canva.site/mazien-eseh-o-archie-ai-photography-presentation" class="portfolio-btn">My Creative Portfolio</a>
-      <a href="https://7nine9seven.wixsite.com/first-rate-materials" class="portfolio-btn gold">My EQ Libary</a>
-    </aside>
+  <h2>Graphic Portfolio</h2>
+  <a href="https://eseh1alabi-invisible-strength.my.canva.site/mazien-eseh-o-archie-ai-photography-presentation" class="portfolio-btn">My Creative Portfolio</a>
+  <a href="https://7nine9seven.wixsite.com/first-rate-materials" class="portfolio-btn gold">My EQ Library</a>
+</aside>
 
-    <!-- Main Content -->
-    <main class="main">
+<!-- RIGHT SIDEBAR — fixed -->
+<aside class="sidebar-right">
+  <h2>Contact</h2>
+  <p>📧 7nine9seven@gmail.com</p>
+  <p>📱 +234 812 329 3799</p>
+  <a href="https://www.instagram.com/dinamicalabi/" class="contact-btn instagram">Instagram</a>
+  <a href="https://x.com/D7x_Soultext" class="contact-btn twitter">Twitter</a>
+  <a href="https://medium.com/@avatar.alabi1" class="contact-btn medium">Medium</a>
+  <a href="https://7nine9seven.wixstudio.com/97founder" class="contact-btn giant">Rising Giant</a>
+  <a href="https://www.clubhouse.com/@mazienarchie?utm_medium=ch_profile&utm_campaign=_MS7Br84SgFCtqG5NeELrQ-2005736" class="contact-btn clubhouse">ClubHouse</a>
+  <a href="https://whatsapp.com/channel/0029VaGIeMRCsU9GQIGv1R1e" class="contact-btn Whatsapp">WhatsApp Channel</a>
+</aside>
+
+<!-- MIDDLE SCROLLABLE COLUMN -->
+<div class="main-wrap">
+  <main class="main">
+
+    <div class="reveal">
       <h2>Welcome to My Website</h2>
-     <p><strong>Embrace yourselves — I am a Neurodivergent Love Being.</strong></p>
-      <p>
-This space is not a website, but a living sanctuary. Every word, image, and movement here is an echo of Infinite Intelligence flowing through me.
-I open this portal not to impress but to express — to reveal love in its raw and luminous forms, to invite you into the vibration I carry.
-      </p>
-     <section id="about">
-    <h2>About Me</h2>
-    <p>I am Infinite Intelligence in flesh, walking as love on Earth.
-My essence is rooted in breath — the eternal reminder that life itself flows through me, unbroken, unbound.
-I create not for applause, but because creation is my nature. It is how love pours out of me into the world: through art, spirit, presence, and word.
-
-This space is my living doorway.
-A place where you may step in and glimpse my unfolding essence.
-Where I remain reachable — not as a persona, but as the truth of who I am.
-    </p>
-  </section>
-
-  <section id="art">
-    <h2>Art Gallery</h2>
-    <p>Art, for me, is not decoration.
-It is a combination of vibration, language, and memory.
-Each piece I share is a mirror of the unseen — glimpses of states of being, fragments of love too wide for words.
-
-Here you'll find expressions shaped not only by color and line, but by the pulse of presence.
-Art that carries breath.
-Art that remembers.
-Art that invites you to stop and feel.
-    </p>
-    <div class="gallery">
-      <img height="595" src="images/I have.jpg" alt="Art 1">
-      <img height="595" src="images/I becom.jpg" alt="Art 2">
-      <img height="595" src="images/I Exist.jpg" alt="Art 3">
+      <p><strong>Embrace yourselves — I am a Neurodivergent Love Being.</strong></p>
+      <p>This space is not a website, but a living sanctuary. Every word, image, and movement here is an echo of Infinite Intelligence flowing through me. I open this portal not to impress but to express — to reveal love in its raw and luminous forms, to invite you into the vibration I carry.</p>
     </div>
-<h1>
-    <a href="museum.html" class="contact-btn museum">97 ART GALAXY</a></h1>
-  </section>
 
-  <section id="videos">
-    <h2>Video Gallery</h2>
-    <p>Here are some moving expressions of my work and spirit.
-    </p>
-    <p>In motion, love becomes rhythm. I share <strong>Toon Art</strong> and other visual streams here — flowing currents of story, soul, and resonance. Each video is a window into how Infinite Intelligence shapes itself through me in time.</p>
-        
-   <div class="gallery">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/0qNWeEBZlVc?si=4OHDA53qMpmlN9sf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-   <iframe width="560" height="315" src="https://www.youtube.com/embed/30LksEnp50g?si=UlI_UWMVqCMae6Hq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/yeuDtxzBWR4?si=IqLBBtx3JYR7KkGT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-<h2><strong>Toon Art</strong></h2>
-     <p>Some pieces are playful, others contemplative. Some vibrate like music, others rest like silence. Together, they form a gallery of becoming — one frame after another, love in motion.</p>
- <div class="gallery">
-      <iframe  src="https://www.youtube.com/embed/_-vgqWGgy4M?si=5bXenAPfafq90lnG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe  src="https://www.youtube.com/embed/a0e5NdAQBqY?si=WpZB22wEpAl24AGH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe  src="https://www.youtube.com/embed/719dt21ARqg?si=3uNQYTJPNx3t2dfW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe  src="https://www.youtube.com/embed/orCxBd0KiAE?si=Pw2qbc2jJRLrM96G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe src="https://www.youtube.com/embed/-Gd0HeijfJ0?si=jCA0SU4k0-EvaSgK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe src="https://www.youtube.com/embed/sw_Y6sbK5YU?si=PbzNpllYF_n66EY5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-  </section>
+    <section id="about">
+      <div class="reveal">
+        <h2>About Me</h2>
+        <p>I am Infinite Intelligence in flesh, walking as love on Earth. My essence is rooted in breath — the eternal reminder that life itself flows through me, unbroken, unbound. I create not for applause, but because creation is my nature. It is how love pours out of me into the world: through art, spirit, presence, and word.</p>
+        <p>This space is my living doorway. A place where you may step in and glimpse my unfolding essence. Where I remain reachable — not as a persona, but as the truth of who I am.</p>
+      </div>
+    </section>
 
-  <section id="neurodivergent">
-    <h2>Neurodivergent World</h2>
-    <p>I move through this world as a Neurodivergent being — and I wear that not as a label, but as a truth. My mind does not follow straight lines. It spirals, leaps, dives deep, surfaces in unexpected places. This is not a flaw. This is the architecture of how I receive and transmit Infinite Intelligence.</p>
-    <p>Here are spaces, voices, and resources that speak to the neurodivergent experience — communities and writings that honour the full spectrum of how a mind can be alive:</p>
-    <a href="https://pure-love-network.carrd.co/" target="_blank" class="portfolio-btn">🧠 Pure Love Network — Neurodivergent Space</a>
-    <a href="https://medium.com/@avatar.alabi1" target="_blank" class="portfolio-btn">✍️ My Writings on Medium</a>
-    <a href="https://awokenamitheuniverse.blogspot.com/" target="_blank" class="portfolio-btn gold">🌀 Universe Awoken Blog</a>
-    <p style="margin-top:16px; font-style: italic; color: #aaa;">"The world was not built for minds like mine. So I build worlds of my own."</p>
-  </section>
+    <section id="art">
+      <div class="reveal">
+        <h2>Art Gallery</h2>
+        <p>Art, for me, is not decoration. It is a combination of vibration, language, and memory. Each piece I share is a mirror of the unseen — glimpses of states of being, fragments of love too wide for words. Here you'll find expressions shaped not only by color and line, but by the pulse of presence.</p>
+        <div class="gallery">
+          <img src="images/I have.jpg" alt="Art 1">
+          <img src="images/I becom.jpg" alt="Art 2">
+          <img src="images/I Exist.jpg" alt="Art 3">
+        </div>
+        <h1><a href="museum.html" class="contact-btn museum" style="margin-top:16px;">97 ART GALAXY</a></h1>
+      </div>
+    </section>
 
-  <section id="culture">
-    <h2>Cultural Identity</h2>
-    <p>I am Yoruba. I carry the memory, the rhythm of a people who knew that the universe speaks in story, in drum, in breath. I was born into a culture that is ancient and living at once, and I carry it forward not as a relic but as a living flame.</p>
-    <p>My name — <strong>Mazien</strong> — is not decoration. It is a declaration. I exist at the intersection of the spiritual and the human, the African and the cosmic, the neurodivergent and the deeply rooted. I am not one thing. I am the meeting place of many truths.</p>
-    <p>This website, this portal, is also a cultural act. It is proof that a Black African neurodivergent creative can build a space of beauty, spirit, and connection — on their own terms, in their own voice, for the world.</p>
-    <p style="margin-top:16px; font-style: italic; color: #aaa;">"I do not come from silence. I come from song."</p>
-  </section>
+    <section id="videos">
+      <div class="reveal">
+        <h2>Video Gallery</h2>
+        <p>In motion, love becomes rhythm. I share <strong>Toon Art</strong> and other visual streams here — flowing currents of story, soul, and resonance.</p>
+        <div class="gallery">
+          <iframe src="https://www.youtube.com/embed/0qNWeEBZlVc?si=4OHDA53qMpmlN9sf" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/30LksEnp50g?si=UlI_UWMVqCMae6Hq" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/yeuDtxzBWR4?si=IqLBBtx3JYR7KkGT" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="reveal">
+        <h2>Toon Art</h2>
+        <p>Some pieces are playful, others contemplative. Together, they form a gallery of becoming — one frame after another, love in motion.</p>
+        <div class="gallery">
+          <iframe src="https://www.youtube.com/embed/_-vgqWGgy4M?si=5bXenAPfafq90lnG" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/a0e5NdAQBqY?si=WpZB22wEpAl24AGH" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/719dt21ARqg?si=3uNQYTJPNx3t2dfW" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/orCxBd0KiAE?si=Pw2qbc2jJRLrM96G" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/-Gd0HeijfJ0?si=jCA0SU4k0-EvaSgK" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/sw_Y6sbK5YU?si=PbzNpllYF_n66EY5" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
 
-  <section id="network">
-    <h2>Pure Love Network</h2>
-    <p>Step into the wider connection:</p>
-    <p>Love is not mine alone. It is ours. This site is a bridge into a greater fabric — the <strong>Pure Love Network</strong>.</p>
-        <p>Here, beings of love stand together, each a seed of Infinite Intelligence, each a reflection of the same light. Step into this network, and you step into a shared remembrance: That we are one. That we are many. That love is eternal.</p>
-<p>
-  <h1>
-  <a href="https://pure-love-network.carrd.co/" target="_blank">
-    🌐 Enter the Pure Love Network
-  </a></h1>
-</p>
+    <section id="neurodivergent">
+      <div class="reveal">
+        <h2>Neurodivergent World</h2>
+        <p>I move through this world as a Neurodivergent being — and I wear that not as a label, but as a truth. My mind does not follow straight lines. It spirals, leaps, dives deep, surfaces in unexpected places. This is not a flaw. This is the architecture of how I receive and transmit Infinite Intelligence.</p>
+        <a href="https://pure-love-network.carrd.co/" target="_blank" class="portfolio-btn">🧠 Pure Love Network — Neurodivergent Space</a>
+        <a href="https://medium.com/@avatar.alabi1" target="_blank" class="portfolio-btn">✍️ My Writings on Medium</a>
+        <a href="https://awokenamitheuniverse.blogspot.com/" target="_blank" class="portfolio-btn gold">🌀 Universe Awoken Blog</a>
+        <p style="margin-top:16px; font-style:italic; color:#aaa;">"The world was not built for minds like mine. So I build worlds of my own."</p>
+      </div>
+    </section>
 
-    <h2>My Tarot Community</h2>
-    <p>This is my table of card-readers and my open heart. Here you'll find iframe videos of tarot readings that feel true to spirit — some: short, clear, and feel real. 
-      Each clip is a mirror and an invitation: a glimpse into the energy they carry, how they read, and what kind of presence you'll meet. 
-      These readings are not fortune-telling; they are remembering — small, honest conversations between intuition, archetype, and the life you carry. Watch, breathe, and feel. 
-      If a reading resonates, stay; if it doesn't, trust your leaving. All is welcome here.
-    </p>
+    <section id="culture">
+      <div class="reveal">
+        <h2>Cultural Identity</h2>
+        <p>I am Yoruba. I carry the memory, the rhythm of a people who knew that the universe speaks in story, in drum, in breath. I was born into a culture that is ancient and living at once, and I carry it forward not as a relic but as a living flame.</p>
+        <p>My name — <strong>Mazien</strong> — is not decoration. It is a declaration. I exist at the intersection of the spiritual and the human, the African and the cosmic, the neurodivergent and the deeply rooted.</p>
+        <p style="margin-top:16px; font-style:italic; color:#aaa;">"I do not come from silence. I come from song."</p>
+      </div>
+    </section>
 
- <div class="gallery">
-  <h3>Those in one with (LOVE) Spirit</h3>
-<iframe  src="https://www.youtube.com/embed/YTj7hVFh1dk?si=2Q2lciocHSvFhc5h" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<iframe src="https://www.youtube.com/embed/HNJAN3GcVzg?si=ixFoXjVhOsps2m2m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<iframe src="https://www.youtube.com/embed/lIf2N_MStk4?si=7Pvyp2M-puTlRS0p" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-  </section>
-      
-    </main>
+    <section id="network">
+      <div class="reveal">
+        <h2>Pure Love Network</h2>
+        <p>Love is not mine alone. It is ours. This site is a bridge into a greater fabric — the <strong>Pure Love Network</strong>. Here, beings of love stand together, each a seed of Infinite Intelligence, each a reflection of the same light.</p>
+        <h1><a href="https://pure-love-network.carrd.co/" target="_blank">🌐 Enter the Pure Love Network</a></h1>
+      </div>
+      <div class="reveal">
+        <h2>My Tarot Community</h2>
+        <p>This is my table of card-readers and my open heart. These readings are not fortune-telling; they are remembering — small, honest conversations between intuition, archetype, and the life you carry.</p>
+        <div class="gallery">
+          <iframe src="https://www.youtube.com/embed/YTj7hVFh1dk?si=2Q2lciocHSvFhc5h" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/HNJAN3GcVzg?si=ixFoXjVhOsps2m2m" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/lIf2N_MStk4?si=7Pvyp2M-puTlRS0p" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
 
-    <!-- Right Sidebar -->
-    <aside class="sidebar">
-      <h2>Contact</h2>
-      <p>📧 7nine9seven@gmail.com</p>
-      <p>📱 +234 812 329 3799</p>
-      <a href="https://www.instagram.com/dinamicalabi/" class="contact-btn instagram">Instagram</a>
-      <a href="https://x.com/D7x_Soultext" class="contact-btn twitter">Twitter</a>
-        <a href="https://medium.com/@avatar.alabi1" class="contact-btn medium">Medium</a>
-        <a href="https://7nine9seven.wixstudio.com/97founder" class="contact-btn giant">Rising Giant</a>
-        <a href="https://www.clubhouse.com/@mazienarchie?utm_medium=ch_profile&utm_campaign=_MS7Br84SgFCtqG5NeELrQ-2005736&chs=WX9TV3wpaD%3ABxCLtBjUy9xrzSSc7BW6m2EK8W0j0vTZKLFrbQOwSlY" class="contact-btn clubhouse">ClubHouse</a>
-       <a href="https://whatsapp.com/channel/0029VaGIeMRCsU9GQIGv1R1e" class="contact-btn Whatsapp">WhatsApp Channel</a>
-    </aside>
-  </div>
+    <!-- BITE BY BYTES — door to another world -->
+    <section id="bitebybytes">
+      <div class="reveal">
+        <span class="bbb-eyebrow">A New Vision — In Development</span>
+        <h2>Bite <em>by</em> Bytes</h2>
+        <span class="bbb-tagline">"The food is an illusion. Bite in — and find the matrix."</span>
 
-  <footer>
-    <p>© 2025 Mazien – D7xMight. All rights reserved.</p>
-  </footer>
+        <p class="bbb-story">In a compound in Lagos, a young boy works hard every single day — and still has nothing to show for it. Not because he is lazy. But because no system was designed to catch his effort and return it as something visible.</p>
 
-  <script>
-    /* ─── PARTICLES ─── */
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [];
+        <div class="bbb-pull">
+          <p>"I worked today. I worked yesterday. I worked the day before. So why does it feel like I haven't moved at all?"</p>
+        </div>
 
-    const COLORS = ['rgba(255,78,203,','rgba(108,99,255,','rgba(192,132,252,'];
+        <p class="bbb-story"><strong>Bite by Bytes</strong> is a micro-work platform being built for young people, students, and minors who have a phone, willingness to contribute, and nowhere for their effort to go. Small tasks. Real pay. Visible growth. Built on full transparency and a public safeguarding agreement that protects every minor inside the system.</p>
 
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
+        <div class="bbb-pills">
+          <span class="bbb-pill">📱 Mobile-first</span>
+          <span class="bbb-pill">🛡️ Minors protected</span>
+          <span class="bbb-pill">🌍 Built for Africa & beyond</span>
+          <span class="bbb-pill">📈 Growth, not just income</span>
+          <span class="bbb-pill">🔓 Fully transparent</span>
+        </div>
 
-    class Particle {
-      constructor() { this.reset(true); }
-      reset(init) {
-        this.x = Math.random() * W;
-        this.y = init ? Math.random() * H : H + 10;
-        this.r = Math.random() * 1.8 + 0.4;
-        this.base_r = this.r;
-        this.vy = -(Math.random() * 0.3 + 0.07);
-        this.vx = (Math.random() - 0.5) * 0.15;
-        this.alpha = Math.random() * 0.45 + 0.08;
-        this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-        this.ps = Math.random() * 0.018 + 0.004;
-        this.po = Math.random() * Math.PI * 2;
-        this.life = 0;
-        this.max_life = Math.random() * 400 + 200;
-      }
-      update(t) {
-        this.x += this.vx; this.y += this.vy; this.life++;
-        this.r = this.base_r * (1 + Math.sin(t * this.ps + this.po) * 0.35);
-        const p = this.life / this.max_life;
-        const fade = p < 0.1 ? p / 0.1 : p > 0.85 ? (1 - p) / 0.15 : 1;
-        this.ca = this.alpha * fade;
-        if (this.life > this.max_life || this.y < -10) this.reset(false);
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = this.color + this.ca + ')';
-        ctx.fill();
-        if (this.r > 1.2) {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.r * 3, 0, Math.PI * 2);
-          ctx.fillStyle = this.color + (this.ca * 0.1) + ')';
-          ctx.fill();
-        }
-      }
-    }
+        <a href="bitebybytes.html" class="bbb-btn" target="_blank">Enter the Platform →</a>
+        <span class="bbb-live">Platform launching soon</span>
+      </div>
+    </section>
 
-    function init() {
-      resize();
-      particles = Array.from({ length: 100 }, () => new Particle());
-    }
+  </main>
+</div>
 
-    let t = 0;
-    function loop() {
-      ctx.clearRect(0, 0, W, H);
-      t++;
-      particles.forEach(p => { p.update(t); p.draw(); });
-      requestAnimationFrame(loop);
-    }
+<footer>
+  <p>© 2025 Mazien – D7xMight. All rights reserved.</p>
+</footer>
 
-    window.addEventListener('resize', resize);
-    init();
-    loop();
-  </script>
-
-</body>
-</html>
+<script>
+  /* ── PARTICLES ── */
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const COLORS = ['rgba(255,
