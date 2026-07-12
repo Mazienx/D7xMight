@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mazien – D7xMight</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden; /* body itself never scrolls */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0b0b;
+      color: #f5f5f5;
+    }
+
+    /* ── PARTICLE CANVAS ── */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #ff4ecb, #6c63ff);
+      padding: 14px 20px;
+      text-align: center;
+      overflow: hidden;
+    }
+    header h1 {
+      font-size: 1.5em;
+      margin: 0;
+      position: relative;
+      z-index: 2;
+      animation: breathe 5s ease-in-out infinite;
+    }
+    header p {
+      font-size: 0.9em;
+      margin-top: 3px;
+      color: #e5e5e5;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes breathe {
+      0%,100% { text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+      50%      { text-shadow: 0 0 28px #fff, 0 0 50px rgba(255,78,203,0.8); }
+    }
+    header::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 120% at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 70%);
+      animation: halo 4s ease-in-out infinite;
+      z-index: 1;
+    }
+    @keyframes halo {
+      0%,100% { opacity: 0.4; transform: scale(1); }
+      50%      { opacity: 1;   transform: scale(1.12); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      z-index: 99;
+      background: #111;
+      padding: 8px 12px;
+      text-align: center;
+      border-bottom: 1px solid #222;
+    }
+    nav a {
+      color: #ff4ecb;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.85em;
+    }
+    nav a:hover { text-decoration: underline; }
+    nav a.bbb-nav { color: #00FF41; }
+
+    /* ── CHROME HEIGHTS ── */
+    :root {
+      --hdr: 72px;
+      --nav: 37px;
+      --top: 109px;   /* header + nav */
+      --sw:  220px;   /* sidebar width */
+    }
+
+    /* ── THREE COLUMN SHELL ── */
+    .shell {
+      position: fixed;
+      top: var(--top);
+      left: 0; right: 0;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: var(--sw) 1fr var(--sw);
+      z-index: 1;
+    }
+
+    /* ── SIDEBARS — same height as shell, never grow ── */
+    .sidebar-left,
+    .sidebar-right {
+      background: #121212;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px 12px;
+      height: 100%;
+    }
+    .sidebar-left  { border-right: 1px solid #222; }
+    .sidebar-right { border-left:  1px solid #222; }
+
+    .sidebar-left h2,
+    .sidebar-right h2 {
+      color: #ff4ecb;
+      font-size: 0.95em;
+      margin: 16px 0 8px;
+    }
+    .sidebar-left h2:first-child,
+    .sidebar-right h2:first-child { margin-top: 0; }
+
+    .sidebar-left p,
+    .sidebar-right p {
+      font-size: 0.82em;
+      color: #ccc;
+      margin-bottom: 5px;
+    }
+
+    /* ── MIDDLE — the only thing that scrolls ── */
+    .middle {
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100%;
+      background: #1a1a1a;
+      padding: 28px 24px 60px;
+    }
+
+    /* ── BUTTONS ── */
+    .portfolio-btn {
+      display: block;
+      background: #859CD0;
+      color: #fff;
+      padding: 8px 10px;
+      margin: 7px 0;
+      text-align: center;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.8em;
+    }
+    .portfolio-btn.gold { color: #000; background: #FFD700; }
+    .contact-btn {
+      display: block;
+      margin: 7px 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.8em;
+    }
+    .instagram { background:#ff4081; color:#fff; }
+    .twitter   { background:#2196f3; color:#fff; }
+    .medium    { background:#000;    color:#fff; }
+    .giant     { background:#800080; color:#fff; }
+    .clubhouse { background:#FFA908; color:#000; }
+    .Whatsapp  { background:#25D366; color:#000; }
+    .museum    { background:#85C6D0; color:#000; }
+
+    /* ── MIDDLE TYPOGRAPHY ── */
+    .middle h2 { color: #ff4ecb; margin: 28px 0 10px; font-size: 1.3em; }
+    .middle h1 { margin: 16px 0 10px; }
+    .middle p  { line-height: 1.75; color: #ddd; margin-bottom: 12px; font-size: 0.95em; }
+
+    /* ── GALLERY ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .gallery img,
+    .gallery iframe {
+      width: 100%;
+      border-radius: 10px;
+      height: 300px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    /* ── FLOAT-IN ANIMATION — triggered by class, not scroll ── */
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .float-in {
+      animation: floatIn 0.7s ease forwards;
+    }
+    section { margin-bottom: 12px; }
+
+    /* ── BITE BY BYTES ── */
+    #bitebybytes {
+      margin-top: 40px;
+      background: linear-gradient(145deg, #1C0A00, #2D1200);
+      border-radius: 18px;
+      padding: 32px 24px;
+      border: 1px solid rgba(0,255,65,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    #bitebybytes::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 75% 20%, rgba(0,255,65,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .bbb-eyebrow {
+      display: block;
+      font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #00FF41; font-weight: 600;
+      margin-bottom: 10px;
+    }
+    #bitebybytes h2 {
+      font-family: Georgia, serif;
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 900;
+      color: #F5F0E8;
+      margin: 0 0 4px;
+      line-height: 1.1;
+    }
+    #bitebybytes h2 em { color: #00FF41; font-style: italic; }
+    .bbb-tagline {
+      display: block;
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #00AA22; font-size: 13px;
+      margin-bottom: 18px;
+    }
+    .bbb-story { font-size: 14px; color: #C8B89A; line-height: 1.8; margin-bottom: 14px; }
+    .bbb-story strong { color: #F5F0E8; }
+    .bbb-pull {
+      border-left: 3px solid #00FF41;
+      padding: 12px 16px; margin: 16px 0;
+      background: rgba(0,255,65,0.04);
+      border-radius: 0 8px 8px 0;
+    }
+    .bbb-pull p {
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #F5F0E8; font-size: 14px;
+      line-height: 1.5; margin: 0;
+    }
+    .bbb-pills { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0; }
+    .bbb-pill {
+      background: rgba(0,255,65,0.08);
+      border: 1px solid rgba(0,255,65,0.2);
+      color: #00FF41; border-radius: 100px;
+      padding: 4px 12px; font-size: 11px; font-weight: 500;
+    }
+    .bbb-btn {
+      display: inline-block;
+      background: #00FF41; color: #1C0A00;
+      font-weight: 800; font-size: 14px;
+      padding: 12px 28px; border-radius: 100px;
+      text-decoration: none; margin-top: 6px;
+      transition: all 0.25s;
+    }
+    .bbb-btn:hover {
+      background: #00E63A;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,255,65,0.3);
+    }
+    .bbb-live {
+      display: inline-flex; align-items: center;
+      gap: 7px; margin-left: 12px;
+      color: #00FF41; font-size: 11px;
+      letter-spacing: 1px; opacity: 0.7;
+      vertical-align: middle;
+    }
+    .bbb-live::before {
+      content: ''; width: 6px; height: 6px;
+      background: #00FF41; border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.3; transform:scale(0.7); }
+    }
+
+    /* ── FOOTER inside middle ── */
+    .inner-footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      text-align: center;
+      font-size: 0.82em;
+      color: #666;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 760px) {
+      html, body { overflow: auto; height: auto; }
+
+      header { position: relative; top: auto; padding: 16px; }
+      header h1 { font-size: 1.3em; }
+
+      nav {
+        position: relative; top: auto;
+        display: flex; flex-wrap: wrap;
+        justify-content: center; gap: 6px;
+        padding: 10px 8px;
+      }
+      nav a { margin: 0 6px; font-size: 0.8em; }
+
+      .shell {
+        position: relative;
+        top: auto; bottom: auto;
+        display: flex; flex-direction: column;
+        height: auto;
+      }
+
+      .sidebar-left, .sidebar-right {
+        height: auto; overflow: visible;
+        border: none; border-top: 1px solid #222;
+        padding: 16px;
+      }
+
+      .middle {
+        height: auto; overflow: visible;
+        padding: 20px 16px 40px;
+        order: -1;
+      }
+
+      .gallery { grid-template-columns: 1fr; }
+      .gallery img, .gallery iframe { height: 240px; }
+
+      .bbb-btn { display: block; text-align: center; }
+      .bbb-live { display: block; margin: 10px 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<header>
+  <h1>✨ Mazien – D7xMight ✨</h1>
+  <p>My living portal of Art, Spirit, and Connection</p>
+</header>
+
+<nav>
+  <a href="#about">About</a>
+  <a href="#art">Art</a>
+  <a href="#videos">Videos</a>
+  <a href="#neurodivergent">Neurodivergent</a>
+  <a href="#culture">Culture</a>
+  <a href="#network">Network</a>
+  <a href="#bitebybytes" class="bbb-nav">Bite by Bytes ↗</a>
+</nav>
+
+<div class="shell">
+
+  <!-- LEFT SIDEBAR — fixed, never moves -->
+  <aside class="sidebar-left">
+    <h2>Blog Posts</h2>
+    <iframe src="https://awokenamitheuniverse.blogspot.com/" width="100%" height="200" frameborder="0" style="border-radius:8px;display:block;"></iframe>
+    <h2>Graphic Portfolio</h2>
+    <a href="https://eseh1alabi-invisible-strength.my.canva.site/mazien-eseh-o-archie-ai-photography-presentation" class="portfolio-btn">My Creative Portfolio</a>
+    <a href="https://7nine9seven.wixsite.com/first-rate-materials" class="portfolio-btn gold">My EQ Library</a>
+  </aside>
+
+  <!-- MIDDLE — the only scrolling column -->
+  <div class="middle" id="middle-col">
+
+    <div class="float-in">
+      <h2>Welcome to My Website</h2>
+      <p><strong>Embrace yourselves — I am a Neurodivergent Love Being.</strong></p>
+      <p>This space is not a website, but a living sanctuary. Every word, image, and movement here is an echo of Infinite Intelligence flowing through me. I open this portal not to impress but to express — to reveal love in its raw and luminous forms, to invite you into the vibration I carry.</p>
+    </div>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I am Infinite Intelligence in flesh, walking as love on Earth. My essence is rooted in breath — the eternal reminder that life itself flows through me, unbroken, unbound. I create not for applause, but because creation is my nature.</p>
+      <p>This space is my living doorway. A place where you may step in and glimpse my unfolding essence. Where I remain reachable — not as a persona, but as the truth of who I am.</p>
+    </section>
+
+    <section id="art">
+      <h2>Art Gallery</h2>
+      <p>Art, for me, is not decoration. It is vibration, language, and memory. Each piece I share is a mirror of the unseen — glimpses of states of being, fragments of love too wide for words.</p>
+      <div class="gallery">
+        <img src="images/I have.jpg" alt="Art 1">
+        <img src="images/I becom.jpg" alt="Art 2">
+        <img src="images/I Exist.jpg" alt="Art 3">
+      </div>
+      <h1><a href="museum.html" class="contact-btn museum" style="margin-top:14px; display:inline-block;">97 ART GALAXY</a></h1>
+    </section>
+
+    <section id="videos">
+      <h2>Video Gallery</h2>
+      <p>In motion, love becomes rhythm. I share <strong>Toon Art</strong> and other visual streams — flowing currents of story, soul, and resonance.</p>
+      <div class="gallery">
+        <iframe src="https://www.youtube.com/embed/0qNWeEBZlVc?si=4OHDA53qMpmlN9sf" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/30LksEnp50g?si=UlI_UWMVqCMae6Hq" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/yeuDtxzBWR4?si=IqLBBtx3JYR7KkGT" allowfullscreen></iframe>
+      </div>
+      <h2>Toon Art</h2>
+      <p>Some pieces are playful, others contemplative. Together, they form a gallery of becoming — love in motion.</p>
+      <div class="gallery">
+        <iframe src="https://www.youtube.com/embed/_-vgqWGgy4M?si=5bXenAPfafq90lnG" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/a0e5NdAQBqY?si=WpZB22wEpAl24AGH" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/719dt21ARqg?si=3uNQYTJPNx3t2dfW" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/orCxBd0KiAE?si=Pw2qbc2jJRLrM96G" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/-Gd0HeijfJ0?si=jCA0SU4k0-EvaSgK" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/sw_Y6sbK5YU?si=PbzNpllYF_n66EY5" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section id="neurodivergent">
+      <h2>Neurodivergent World</h2>
+      <p>I move through this world as a Neurodivergent being — and I wear that not as a label, but as a truth. My mind does not follow straight lines. It spirals, leaps, dives deep, surfaces in unexpected places. This is not a flaw. This is the architecture of how I receive and transmit Infinite Intelligence.</p>
+      <a href="https://pure-love-network.carrd.co/" target="_blank" class="portfolio-btn">🧠 Pure Love Network — Neurodivergent Space</a>
+      <a href="https://medium.com/@avatar.alabi1" target="_blank" class="portfolio-btn">✍️ My Writings on Medium</a>
+      <a href="https://awokenamitheuniverse.blogspot.com/" target="_blank" class="portfolio-btn gold">🌀 Universe Awoken Blog</a>
+      <p style="margin-top:14px; font-style:italic; color:#aaa;">"The world was not built for minds like mine. So I build worlds of my own."</p>
+    </section>
+
+    <section id="culture">
+      <h2>Cultural Identity</h2>
+      <p>I am Yoruba. I carry the memory, the rhythm of a people who knew that the universe speaks in story, in drum, in breath. I was born into a culture that is ancient and living at once, and I carry it forward not as a relic but as a living flame.</p>
+      <p>My name — <strong>Mazien</strong> — is not decoration. It is a declaration. I exist at the intersection of the spiritual and the human, the African and the cosmic, the neurodivergent and the deeply rooted.</p>
+      <p style="margin-top:14px; font-style:italic; color:#aaa;">"I do not come from silence. I come from song."</p>
+    </section>
+
+    <section id="network">
+      <h2>Pure Love Network</h2>
+      <p>Love is not mine alone. It is ours. This site is a bridge into a greater fabric — the <strong>Pure Love Network</strong>. Here, beings of love stand together, each a seed of Infinite Intelligence, each a reflection of the same light.</p>
+      <h1><a href="https://pure-love-network.carrd.co/" target="_blank">🌐 Enter the Pure Love Network</a></h1>
+      <h2>My Tarot Community</h2>
+      <p>These readings are not fortune-telling; they are remembering — small, honest conversations between intuition, archetype, and the life you carry.</p>
+      <div class="gallery">
+        <iframe src="https://www.youtube.com/embed/YTj7hVFh1dk?si=2Q2lciocHSvFhc5h" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/HNJAN3GcVzg?si=ixFoXjVhOsps2m2m" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/lIf2N_MStk4?si=7Pvyp2M-puTlRS0p" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- BITE BY BYTES — door to another world -->
+    <section id="bitebybytes">
+      <span class="bbb-eyebrow">A New Vision — In Development</span>
+      <h2>Bite <em>by</em> Bytes</h2>
+      <span class="bbb-tagline">"The food is an illusion. Bite in — and find the matrix."</span>
+      <p class="bbb-story">In a compound in Lagos, a young boy works hard every single day — and still has nothing to show for it. Not because he is lazy. But because no system was designed to catch his effort and return it as something visible.</p>
+      <div class="bbb-pull">
+        <p>"I worked today. I worked yesterday. I worked the day before. So why does it feel like I haven't moved at all?"</p>
+      </div>
+      <p class="bbb-story"><strong>Bite by Bytes</strong> is a micro-work platform being built for young people, students, and minors who have a phone, willingness to contribute, and nowhere for their effort to go. Small tasks. Real pay. Visible growth. Built on full transparency and a public safeguarding agreement that protects every minor inside the system.</p>
+      <div class="bbb-pills">
+        <span class="bbb-pill">📱 Mobile-first</span>
+        <span class="bbb-pill">🛡️ Minors protected</span>
+        <span class="bbb-pill">🌍 Built for Africa & beyond</span>
+        <span class="bbb-pill">📈 Growth, not just income</span>
+        <span class="bbb-pill">🔓 Fully transparent</span>
+      </div>
+      <a href="bitebybytes.html" class="bbb-btn" target="_blank">Enter the Platform →</a>
+      <span class="bbb-live">Platform launching soon</span>
+    </section>
+
+    <div class="inner-footer">
+      © 2025 Mazien – D7xMight. All rights reserved.
+    </div>
+
+  </div><!-- end .middle -->
+
+  <!-- RIGHT SIDEBAR — fixed, never moves -->
+  <aside class="sidebar-right">
+    <h2>Contact</h2>
+    <p>📧 7nine9seven@gmail.com</p>
+    <p>📱 +234 812 329 3799</p>
+    <a href="https://www.instagram.com/dinamicalabi/" class="contact-btn instagram">Instagram</a>
+    <a href="https://x.com/D7x_Soultext" class="contact-btn twitter">Twitter</a>
+    <a href="https://medium.com/@avatar.alabi1" class="contact-btn medium">Medium</a>
+    <a href="https://7nine9seven.wixstudio.com/97founder" class="contact-btn giant">Rising Giant</a>
+    <a href="https://www.clubhouse.com/@mazienarchie?utm_medium=ch_profile&utm_campaign=_MS7Br84SgFCtqG5NeELrQ-2005736" class="contact-btn clubhouse">ClubHouse</a>
+    <a href="https://whatsapp.com/channel/0029VaGIeMRCsU9GQIGv1R1e" class="contact-btn Whatsapp">WhatsApp Channel</a>
+  </aside>
+
+</div><!-- end .shell -->
+
+<script>
+  /* ── PARTICLES ── */
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const COLORS = ['rgba(255,78,203,','rgba(108,99,255,','rgba(192,132,252,'];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  class Particle {
+    constructor() { this.reset(true); }
+    reset(init) {
+      this.x = Math.random()*W; this.y = init ? Math.random()*H : H+10;
+      this.r = Math.random()*1.8+0.4; this.base_r = this.r;
+      this.vy = -(Math.random()*0.3+0.07); this.vx = (Math.random()-0.5)*0.15;
+      this.alpha = Math.random()*0.45+0.08;
+      this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
+      this.ps = Math.random()*0.018+0.004; this.po = Math.random()*Math.PI*2;
+      this.life = 0; this.max_life = Math.random()*400+200;
+    }
+    update(t) {
+      this.x+=this.vx; this.y+=this.vy; this.life++;
+      this.r = this.base_r*(1+Math.sin(t*this.ps+this.po)*0.35);
+      const p=this.life/this.max_life;
+      const fade=p<0.1?p/0.1:p>0.85?(1-p)/0.15:1;
+      this.ca=this.alpha*fade;
+      if(this.life>this.max_life||this.y<-10) this.reset(false);
+    }
+    draw() {
+      ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+      ctx.fillStyle=this.color+this.ca+')'; ctx.fill();
+      if(this.r>1.2){
+        ctx.beginPath(); ctx.arc(this.x,this.y,this.r*3,0,Math.PI*2);
+        ctx.fillStyle=this.color+(this.ca*0.1)+')'; ctx.fill();
+      }
+    }
+  }
+  function init(){ resize(); particles=Array.from({length:100},()=>new Particle()); }
+  let t=0;
+  function loop(){ ctx.clearRect(0,0,W,H); t++; particles.forEach(p=>{p.update(t);p.draw();}); requestAnimationFrame(loop); }
+  window.addEventListener('resize', resize);
+  init(); loop();
+
+  /* ── SCROLL-TRIGGERED FLOAT-IN for middle column sections ── */
+  const mid = document.getElementById('middle-col');
+  const sections = mid.querySelectorAll('section');
+
+  // Set initial state
+  sections.forEach(s => {
+    s.style.opacity = '0';
+    s.style.transform = 'translateY(24px)';
+    s.style.transition = 'opacity 0.65s ease, transform 0.65s ease';
+  });
+
+  function checkVisible() {
+    const midRect = mid.getBoundingClientRect();
+    sections.forEach(s => {
+      const r = s.getBoundingClientRect();
+      // visible when top of section is within the middle column viewport
+      if (r.top < midRect.bottom - 40 && r.bottom > midRect.top + 40) {
+        s.style.opacity = '1';
+        s.style.transform = 'translateY(0)';
+      }
+    });
+  }
+
+  // Run on load and on middle column scroll
+  checkVisible();
+  mid.addEventListener('scroll', checkVisible);
+</script>
+</body>
+</html>
